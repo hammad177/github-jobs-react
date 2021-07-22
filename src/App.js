@@ -22,17 +22,36 @@ const App = () => {
     });
   };
 
+  console.log(jobs.error);
   return (
     <Container className='my-4'>
       <h1 className='mb-4'>GitHub Jobs</h1>
       <Search params={params} onParamsChange={handleParamsChange} />
-      <JobsPagination page={page} setPage={setPage} hasNextPage={hasNextPage} />
+      {!jobs && (
+        <JobsPagination
+          page={page}
+          setPage={setPage}
+          hasNextPage={hasNextPage}
+        />
+      )}
       {loading && <h1>loading..</h1>}
       {error && <h1>Error.Try to refresh again</h1>}
-      {jobs.map((job) => {
-        return <Job key={job.id} job={job} />;
-      })}
-      <JobsPagination page={page} setPage={setPage} hasNextPage={hasNextPage} />
+      {jobs && (
+        <>
+          <h2>Error:</h2> <h3>{jobs.error}</h3>
+        </>
+      )}
+      {!jobs &&
+        jobs.map((job) => {
+          return <Job key={job.id} job={job} />;
+        })}
+      {!jobs && (
+        <JobsPagination
+          page={page}
+          setPage={setPage}
+          hasNextPage={hasNextPage}
+        />
+      )}
     </Container>
   );
 };
